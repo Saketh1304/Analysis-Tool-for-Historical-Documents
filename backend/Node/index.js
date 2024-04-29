@@ -17,7 +17,7 @@ const jwt = require('jsonwebtoken');
 dotenv.config();
 
 mongoose
-  .connect("mongodb+srv://jessicakharbanda:IYsBQVZkv4t8j5SH@cluster0.svehwp1.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/mproj")
+  .connect(process.env.MONGO)
   .then(() => {
     console.log('Connected to MongoDB!');
   })
@@ -26,7 +26,7 @@ mongoose
   });
 
   
-JWT_SECRET='secret';
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -45,7 +45,7 @@ app.post('/api/auth/register',async (req, res, next) => {
 
     try {
         const savedUser = await newUser.save();
-        const token = jwt.sign({ id: savedUser._id }, 'secret');
+        const token = jwt.sign({ id: savedUser._id }, JWT_SECRET);
         const { password: _, ...userData } = savedUser.toObject(); // Exclude password from the response
         res.status(201).json({
             ...userData,
@@ -75,7 +75,7 @@ app.post('/api/auth/signin', async (req, res) => {
             return res.status(401).json({ message: "Wrong credentials." });
         }
 
-        const token = jwt.sign({ id: validUser._id }, 'secret', { expiresIn: '1h' });
+        const token = jwt.sign({ id: validUser._id }, JWT_SECRET, { expiresIn: '1h' });
         // Ensure not to send back the password or other sensitive details
         const { password: _, ...userDetails } = validUser.toObject();
 
@@ -99,7 +99,7 @@ app.get('/api/auth/users/me', async (req, res, next) => {
         console.log(token);
         if (!token) return res.status(401).send({ message: 'No token provided' });
 
-        const decoded = jwt.verify(token, 'secret');
+        const decoded = jwt.verify(token, JWT_SECRET);
         const user = await User.findById(decoded.id);
         
         if (!user) return res.status(404).send({ message: 'User not found' });
