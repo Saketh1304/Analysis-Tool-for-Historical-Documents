@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "id": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:0", "label": "Wessex Alfred ", "shape": "dot"}, {"color": "#97c2fc", "id": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:1", "label": "Alfred The Vikings ", "shape": "dot"}, {"color": "#97c2fc", "id": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:2", "label": "the Somerset Levels ", "shape": "dot"}, {"color": "#97c2fc", "id": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:124", "label": "Guthrum ", "shape": "dot"}, {"color": "#97c2fc", "id": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:125", "label": "England ", "shape": "dot"}, {"color": "#97c2fc", "id": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:126", "label": "Alfreds ", "shape": "dot"}, {"color": "#97c2fc", "id": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:127", "label": "AngloSaxon ", "shape": "dot"}, {"color": "#97c2fc", "id": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:128", "label": "more than a days ", "shape": "dot"}, {"color": "#97c2fc", "id": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:129", "label": "decades ", "shape": "dot"}, {"color": "#97c2fc", "id": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:130", "label": "decades ", "shape": "dot"}, {"color": "#97c2fc", "id": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:131", "label": "the Treaty of Wedmore ", "shape": "dot"}, {"color": "#97c2fc", "id": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:132", "label": "English ", "shape": "dot"}, {"color": "#97c2fc", "id": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:133", "label": "878 ", "shape": "dot"}, {"color": "#97c2fc", "id": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:134", "label": "Latin ", "shape": "dot"}, {"color": "#97c2fc", "id": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:135", "label": "Alfred ", "shape": "dot"}, {"color": "#97c2fc", "id": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:136", "label": "King \u00c3\u2020thelwulf ", "shape": "dot"}, {"color": "#97c2fc", "id": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:137", "label": "south ", "shape": "dot"}, {"color": "#97c2fc", "id": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:138", "label": "Alfred the Great ", "shape": "dot"}, {"color": "#97c2fc", "id": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:139", "label": "four ", "shape": "dot"}, {"color": "#97c2fc", "id": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:140", "label": "Edington Alfred ", "shape": "dot"}, {"color": "#97c2fc", "id": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:141", "label": "899 ", "shape": "dot"}, {"color": "#97c2fc", "id": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:142", "label": "Bible ", "shape": "dot"}, {"color": "#97c2fc", "id": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:143", "label": "Alfred the Great Born ", "shape": "dot"}, {"color": "#97c2fc", "id": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:144", "label": "Scandinavia ", "shape": "dot"}, {"color": "#97c2fc", "id": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:145", "label": "849 AD ", "shape": "dot"}, {"color": "#97c2fc", "id": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:146", "label": "871 ", "shape": "dot"}, {"color": "#97c2fc", "id": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:147", "label": "later years ", "shape": "dot"}, {"color": "#97c2fc", "id": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:148", "label": "Wessex ", "shape": "dot"}]);
+                  edges = new vis.DataSet([{"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:0", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:1"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:0", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:2"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:0", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:124"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:0", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:125"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:0", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:126"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:0", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:127"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:0", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:128"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:0", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:129"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:0", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:130"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:0", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:131"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:0", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:132"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:0", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:133"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:0", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:134"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:0", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:135"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:0", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:136"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:0", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:137"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:0", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:138"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:0", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:139"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:0", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:140"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:0", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:141"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:0", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:142"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:0", "label": "child ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:143"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:0", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:144"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:0", "label": "residence ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:145"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:0", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:146"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:0", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:147"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:0", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:148"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:1", "label": "language of work or name ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:132"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:2", "label": "language of work or name ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:132"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:124", "label": "language of work or name ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:132"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:125", "label": "language of work or name ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:132"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:126", "label": "language of work or name ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:132"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:127", "label": "language of work or name ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:132"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:128", "label": "language of work or name ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:132"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:129", "label": "language of work or name ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:132"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:130", "label": "language of work or name ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:132"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:131", "label": "language of work or name ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:132"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:132", "label": "main subject ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:136"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:132", "label": "language of work or name ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:132"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:133", "label": "language of work or name ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:132"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:134", "label": "language of work or name ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:132"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:135", "label": "language of work or name ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:132"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:136", "label": "child ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:143"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:136", "label": "residence ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:145"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:137", "label": "language of work or name ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:132"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:138", "label": "language of work or name ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:132"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:139", "label": "language of work or name ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:132"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:140", "label": "language of work or name ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:132"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:141", "label": "language of work or name ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:132"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:142", "label": "language of work or name ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:132"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:143", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:1"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:143", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:2"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:143", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:124"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:143", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:125"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:143", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:126"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:143", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:127"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:143", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:128"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:143", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:129"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:143", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:130"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:143", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:131"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:143", "label": "language of work or name ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:132"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:143", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:133"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:143", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:134"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:143", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:135"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:143", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:137"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:143", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:138"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:143", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:139"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:143", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:140"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:143", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:141"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:143", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:142"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:143", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:144"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:143", "label": "residence ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:145"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:143", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:146"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:143", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:147"}, {"from": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:143", "label": "father ", "to": "4:1368cad7-7c3a-4cf5-b8ca-f59acae0a0d2:148"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

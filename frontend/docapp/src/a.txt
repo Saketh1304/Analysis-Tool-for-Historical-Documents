@@ -1,0 +1,11 @@
+   // const updateUploads = async (documentName) => {
+    //     try {
+    //       const response = await axios.post('http://localhost:3000/api/auth/user/upload', {
+    //         userId: userId,  // userId from your Auth context
+    //         documentName: documentName,
+    //       });
+    //       console.log("Upload added:", response.data);
+    //     } catch (error) {
+    //       console.error("Failed to update uploads:", error.response ? error.response.data : error.message);
+    //     }
+    //   };

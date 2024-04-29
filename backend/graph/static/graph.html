@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "id": 0, "label": "Napoleon Bonaparte", "shape": "dot", "title": "Napoleon Bonaparte"}, {"color": "#97c2fc", "id": 1, "label": "Napoleone", "shape": "dot", "title": "Napoleone"}, {"color": "#97c2fc", "id": 4, "label": "Napoleon Bonapartes", "shape": "dot", "title": "Napoleon Bonapartes"}, {"color": "#97c2fc", "id": 6, "label": "French", "shape": "dot", "title": "French"}, {"color": "#97c2fc", "id": 9, "label": "the French Republic", "shape": "dot", "title": "the French Republic"}, {"color": "#97c2fc", "id": 10, "label": "First Consul", "shape": "dot", "title": "First Consul"}, {"color": "#97c2fc", "id": 11, "label": "1799 to 1804", "shape": "dot", "title": "1799 to 1804"}, {"color": "#97c2fc", "id": 13, "label": "1804", "shape": "dot", "title": "1804"}, {"color": "#97c2fc", "id": 19, "label": "Corsica", "shape": "dot", "title": "Corsica"}, {"color": "#97c2fc", "id": 20, "label": "Italian", "shape": "dot", "title": "Italian"}, {"color": "#97c2fc", "id": 22, "label": "1789", "shape": "dot", "title": "1789"}, {"color": "#97c2fc", "id": 25, "label": "Austrianss", "shape": "dot", "title": "Austrianss"}, {"color": "#97c2fc", "id": 27, "label": "Egypt", "shape": "dot", "title": "Egypt"}, {"color": "#97c2fc", "id": 29, "label": "First Consul of the French Republic", "shape": "dot", "title": "First Consul of the French Republic"}, {"color": "#97c2fc", "id": 34, "label": "Ulm", "shape": "dot", "title": "Ulm"}, {"color": "#97c2fc", "id": 38, "label": "the Fourth Coalition", "shape": "dot", "title": "the Fourth Coalition"}, {"color": "#97c2fc", "id": 39, "label": "Prussia", "shape": "dot", "title": "Prussia"}, {"color": "#97c2fc", "id": 40, "label": "Jena", "shape": "dot", "title": "Jena"}, {"color": "#97c2fc", "id": 42, "label": "Eastern Europe", "shape": "dot", "title": "Eastern Europe"}, {"color": "#97c2fc", "id": 46, "label": "the War of the Fifth Coalition", "shape": "dot", "title": "the War of the Fifth Coalition"}, {"color": "#97c2fc", "id": 47, "label": "Europe", "shape": "dot", "title": "Europe"}, {"color": "#97c2fc", "id": 57, "label": "Russia", "shape": "dot", "title": "Russia"}, {"color": "#97c2fc", "id": 61, "label": "Austria", "shape": "dot", "title": "Austria"}, {"color": "#97c2fc", "id": 62, "label": "Russian", "shape": "dot", "title": "Russian"}, {"color": "#97c2fc", "id": 63, "label": "Sixth", "shape": "dot", "title": "Sixth"}, {"color": "#97c2fc", "id": 66, "label": "Paris", "shape": "dot", "title": "Paris"}, {"color": "#97c2fc", "id": 68, "label": "Elba", "shape": "dot", "title": "Elba"}, {"color": "#97c2fc", "id": 71, "label": "February 1815", "shape": "dot", "title": "February 1815"}, {"color": "#97c2fc", "id": 73, "label": "Seventh", "shape": "dot", "title": "Seventh"}, {"color": "#97c2fc", "id": 75, "label": "June 1815", "shape": "dot", "title": "June 1815"}, {"color": "#97c2fc", "id": 76, "label": "Saint Helena", "shape": "dot", "title": "Saint Helena"}, {"color": "#97c2fc", "id": 78, "label": "1821", "shape": "dot", "title": "1821"}, {"color": "#97c2fc", "id": 81, "label": "the Louisiana Territory", "shape": "dot", "title": "the Louisiana Territory"}, {"color": "#97c2fc", "id": 91, "label": "Corsican", "shape": "dot", "title": "Corsican"}, {"color": "#97c2fc", "id": 98, "label": "Ajaccio", "shape": "dot", "title": "Ajaccio"}, {"color": "#97c2fc", "id": 99, "label": "Joseph", "shape": "dot", "title": "Joseph"}, {"color": "#97c2fc", "id": 100, "label": "Lucien Elisa Louis", "shape": "dot", "title": "Lucien Elisa Louis"}, {"color": "#97c2fc", "id": 101, "label": "Pauline Caroline", "shape": "dot", "title": "Pauline Caroline"}, {"color": "#97c2fc", "id": 105, "label": "Catholic", "shape": "dot", "title": "Catholic"}, {"color": "#97c2fc", "id": 117, "label": "Louis", "shape": "dot", "title": "Louis"}, {"color": "#97c2fc", "id": 7, "label": "the French Revolution", "shape": "dot", "title": "the French Revolution"}, {"color": "#97c2fc", "id": 8, "label": "the Revolutionary Wars", "shape": "dot", "title": "the Revolutionary Wars"}, {"color": "#97c2fc", "id": 2, "label": "15 August 1769", "shape": "dot", "title": "15 August 1769"}, {"color": "#97c2fc", "id": 5, "label": "Napoleon", "shape": "dot", "title": "Napoleon"}, {"color": "#97c2fc", "id": 96, "label": "Carlo Maria Buonaparte", "shape": "dot", "title": "Carlo Maria Buonaparte"}, {"color": "#97c2fc", "id": 3, "label": "May 1821", "shape": "dot", "title": "May 1821"}, {"color": "#97c2fc", "id": 26, "label": "Two years later", "shape": "dot", "title": "Two years later"}, {"color": "#97c2fc", "id": 51, "label": "Joseph the King of Spain", "shape": "dot", "title": "Joseph the King of Spain"}, {"color": "#97c2fc", "id": 53, "label": "Spanish", "shape": "dot", "title": "Spanish"}, {"color": "#97c2fc", "id": 54, "label": "Portuguese", "shape": "dot", "title": "Portuguese"}, {"color": "#97c2fc", "id": 56, "label": "British", "shape": "dot", "title": "British"}, {"color": "#97c2fc", "id": 90, "label": "Carlo Buonaparte", "shape": "dot", "title": "Carlo Buonaparte"}, {"color": "#97c2fc", "id": 92, "label": "Pasquale Paoli", "shape": "dot", "title": "Pasquale Paoli"}, {"color": "#97c2fc", "id": 93, "label": "Pasquale Paolis", "shape": "dot", "title": "Pasquale Paolis"}, {"color": "#97c2fc", "id": 95, "label": "Louis XVIs court", "shape": "dot", "title": "Louis XVIs court"}, {"color": "#97c2fc", "id": 106, "label": "Nabulione Nabulio Napolionne", "shape": "dot", "title": "Nabulione Nabulio Napolionne"}, {"color": "#97c2fc", "id": 112, "label": "Ponte Novu", "shape": "dot", "title": "Ponte Novu"}, {"color": "#97c2fc", "id": 114, "label": "Charles Louis de Marbeuf", "shape": "dot", "title": "Charles Louis de Marbeuf"}, {"color": "#97c2fc", "id": 14, "label": "1814", "shape": "dot", "title": "1814"}, {"color": "#97c2fc", "id": 24, "label": "Austrians", "shape": "dot", "title": "Austrians"}, {"color": "#97c2fc", "id": 50, "label": "the United Kingdom Napoleon Bonaparte", "shape": "dot", "title": "the United Kingdom Napoleon Bonaparte"}]);
+                  edges = new vis.DataSet([{"from": 0, "title": "RELATION", "to": 1}, {"from": 0, "title": "RELATION", "to": 4}, {"from": 0, "title": "RELATION", "to": 6}, {"from": 0, "title": "RELATION", "to": 9}, {"from": 0, "title": "RELATION", "to": 10}, {"from": 0, "title": "RELATION", "to": 11}, {"from": 0, "title": "RELATION", "to": 13}, {"from": 0, "title": "RELATION", "to": 19}, {"from": 0, "title": "RELATION", "to": 20}, {"from": 0, "title": "RELATION", "to": 22}, {"from": 0, "title": "RELATION", "to": 25}, {"from": 0, "title": "RELATION", "to": 27}, {"from": 0, "title": "RELATION", "to": 29}, {"from": 0, "title": "RELATION", "to": 34}, {"from": 0, "title": "RELATION", "to": 38}, {"from": 0, "title": "RELATION", "to": 39}, {"from": 0, "title": "RELATION", "to": 40}, {"from": 0, "title": "RELATION", "to": 42}, {"from": 0, "title": "RELATION", "to": 46}, {"from": 0, "title": "RELATION", "to": 47}, {"from": 0, "title": "RELATION", "to": 57}, {"from": 0, "title": "RELATION", "to": 61}, {"from": 0, "title": "RELATION", "to": 62}, {"from": 0, "title": "RELATION", "to": 63}, {"from": 0, "title": "RELATION", "to": 66}, {"from": 0, "title": "RELATION", "to": 68}, {"from": 0, "title": "RELATION", "to": 71}, {"from": 0, "title": "RELATION", "to": 73}, {"from": 0, "title": "RELATION", "to": 75}, {"from": 0, "title": "RELATION", "to": 76}, {"from": 0, "title": "RELATION", "to": 78}, {"from": 0, "title": "RELATION", "to": 81}, {"from": 0, "title": "RELATION", "to": 91}, {"from": 0, "title": "RELATION", "to": 98}, {"from": 0, "title": "RELATION", "to": 99}, {"from": 0, "title": "RELATION", "to": 100}, {"from": 0, "title": "RELATION", "to": 101}, {"from": 0, "title": "RELATION", "to": 105}, {"from": 0, "title": "RELATION", "to": 117}, {"from": 0, "title": "RELATION", "to": 0}, {"from": 1, "title": "RELATION", "to": 4}, {"from": 1, "title": "RELATION", "to": 7}, {"from": 1, "title": "RELATION", "to": 8}, {"from": 1, "title": "RELATION", "to": 105}, {"from": 2, "title": "RELATION", "to": 0}, {"from": 2, "title": "RELATION", "to": 5}, {"from": 2, "title": "RELATION", "to": 6}, {"from": 2, "title": "RELATION", "to": 96}, {"from": 3, "title": "RELATION", "to": 0}, {"from": 3, "title": "RELATION", "to": 5}, {"from": 3, "title": "RELATION", "to": 6}, {"from": 4, "title": "RELATION", "to": 6}, {"from": 4, "title": "RELATION", "to": 19}, {"from": 4, "title": "RELATION", "to": 20}, {"from": 4, "title": "RELATION", "to": 22}, {"from": 4, "title": "RELATION", "to": 26}, {"from": 4, "title": "RELATION", "to": 47}, {"from": 4, "title": "RELATION", "to": 51}, {"from": 4, "title": "RELATION", "to": 53}, {"from": 4, "title": "RELATION", "to": 54}, {"from": 4, "title": "RELATION", "to": 56}, {"from": 4, "title": "RELATION", "to": 90}, {"from": 4, "title": "RELATION", "to": 91}, {"from": 4, "title": "RELATION", "to": 92}, {"from": 4, "title": "RELATION", "to": 93}, {"from": 4, "title": "RELATION", "to": 95}, {"from": 4, "title": "RELATION", "to": 98}, {"from": 4, "title": "RELATION", "to": 106}, {"from": 4, "title": "RELATION", "to": 112}, {"from": 4, "title": "RELATION", "to": 114}, {"from": 5, "title": "RELATION", "to": 0}, {"from": 5, "title": "RELATION", "to": 6}, {"from": 5, "title": "RELATION", "to": 112}, {"from": 5, "title": "RELATION", "to": 114}, {"from": 6, "title": "RELATION", "to": 13}, {"from": 6, "title": "RELATION", "to": 14}, {"from": 6, "title": "RELATION", "to": 22}, {"from": 6, "title": "RELATION", "to": 24}, {"from": 6, "title": "RELATION", "to": 46}, {"from": 6, "title": "RELATION", "to": 47}, {"from": 6, "title": "RELATION", "to": 50}, {"from": 6, "title": "RELATION", "to": 91}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,30 @@
+.header{
+    font-family: 'Montserrat', sans-serif;
+     margin-top: 3%;
+    }
+    
+    .form-container{
+     margin-top: 5%;
+    }
+    .button-container {
+     display: flex;
+    align-items: center; /* Centers items vertically */
+    gap: 10px; /* Sets a gap of 10px between items, adjust as needed */
+    }
+    
+    
+    
+    
+    .upload{
+    margin-top: 5%;
+    }
+    .submit__btn {
+     padding: 17px 30px;
+     margin-top: 10px;
+     background: black;
+     border: none;
+     color: white;
+     font-size: 14px;
+     font-family: "Inter";
+     border-radius: 3px;
+     }
